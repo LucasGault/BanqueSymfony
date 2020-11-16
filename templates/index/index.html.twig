@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+
+<div class="">
+    <ul>
+        <li><a href="{{ path('user_index') }}">Personne</a></li>
+        <li><a href="{{ path('bank_account_index') }}">Compte en banque</a></li>
+        {# <li><a href="{{ path('person_place_index') }}">Lieux visités</a></li>
+        <li><a href="{{ path('person_covid_index') }}">Personne infectée</a></li>
+        <li><a href="{{ path('app_register') }}">Créer des utilisateurs</a></li> #}
+   </ul>
+</div>
+{% endblock %}

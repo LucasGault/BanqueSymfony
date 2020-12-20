@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -19,19 +21,26 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('firstname')
-            ->add('lastname')
+            ->add('email', null, [
+                'label' => 'Email '
+            ])
+            ->add('firstname', null, [
+                'label' => 'Prenom '
+            ])
+            ->add('lastname', null, [
+                'label' => 'Nom '
+            ])
             ->add('birthday', DateType::class,
             [
-                'years' => range(1950,2020),
-                'format' => 'dd MMMM yyyy'
+                'years' => range(1920,2020),
+                'format' => 'dd MMMM yyyy',
+                'label' => 'Date de naissance'
             ])
-
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'label' => 'Mot de passe',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -43,10 +52,11 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+
             ])
             ->add('roles', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'isAdmin',
+                'label' => 'Administrateur',
                 'required' => false
             ])
         ;

@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    <div class="flex items-center justify-around mb-12">
+    
+        {{ form_widget(form) }}
+        <button class="btn font-semibold ">{{ button_label|default('Ajouter') }}</button>
+    </div>
+{{ form_end(form) }}

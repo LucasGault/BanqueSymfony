@@ -2,9 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\AccountBeneficiary;
 use App\Entity\BankAccount;
 use App\Entity\User;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,29 +12,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class BankAccountType extends AbstractType
+class AccountBeneficiaryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('iban')
-            ->add('initialBalance',null, [
-                'label' => 'Apport initial'
+            ->add('isBeneficiary', EntityType::class, [
+                'class' => BankAccount::class,
+                'choice_label' => 'iban',
+                'label' => 'Iban du bénéficiaire '
             ])
-            ->add('UserOfAccount', EntityType::class, [
+            ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'email',
-                'label' => 'Proprietaire du compte'
+                'label' => ''
             ])
-            // ->add('transactionCredit')
-            // ->add('debitTransaction')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => BankAccount::class,
+            'data_class' => AccountBeneficiary::class,
         ]);
     }
 }

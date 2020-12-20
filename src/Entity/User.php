@@ -53,14 +53,25 @@ class User implements UserInterface
      */
     private $birthday;
 
+    // /**
+    //  * @ORM\OneToMany(targetEntity=UserAccount::class, mappedBy="accountOwner", orphanRemoval=true)
+    //  */
+    // private $userAccounts;
+
     /**
-     * @ORM\OneToMany(targetEntity=UserAccount::class, mappedBy="accountOwner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BankAccount::class, mappedBy="UserOfAccount", orphanRemoval=true)
      */
-    private $userAccounts;
+    private $bankAccounts;
+
+    /**
+     * @ORM\OneToOne(targetEntity=AccountBeneficiary::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $userBeneficiary;
 
     public function __construct()
     {
         $this->userAccounts = new ArrayCollection();
+        $this->bankAccounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,23 +196,70 @@ class User implements UserInterface
         return $this->userAccounts;
     }
 
-    public function addUserAccount(UserAccount $userAccount): self
+    // public function addUserAccount(UserAccount $userAccount): self
+    // {
+    //     if (!$this->userAccounts->contains($userAccount)) {
+    //         $this->userAccounts[] = $userAccount;
+    //         $userAccount->setAccountOwner($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeUserAccount(UserAccount $userAccount): self
+    // {
+    //     if ($this->userAccounts->removeElement($userAccount)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($userAccount->getAccountOwner() === $this) {
+    //             $userAccount->setAccountOwner(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection|BankAccount[]
+     */
+    public function getBankAccounts(): Collection
     {
-        if (!$this->userAccounts->contains($userAccount)) {
-            $this->userAccounts[] = $userAccount;
-            $userAccount->setAccountOwner($this);
+        return $this->bankAccounts;
+    }
+
+    public function addBankAccount(BankAccount $bankAccount): self
+    {
+        if (!$this->bankAccounts->contains($bankAccount)) {
+            $this->bankAccounts[] = $bankAccount;
+            $bankAccount->setUserOfAccount($this);
         }
 
         return $this;
     }
 
-    public function removeUserAccount(UserAccount $userAccount): self
+    public function removeBankAccount(BankAccount $bankAccount): self
     {
-        if ($this->userAccounts->removeElement($userAccount)) {
+        if ($this->bankAccounts->removeElement($bankAccount)) {
             // set the owning side to null (unless already changed)
-            if ($userAccount->getAccountOwner() === $this) {
-                $userAccount->setAccountOwner(null);
+            if ($bankAccount->getUserOfAccount() === $this) {
+                $bankAccount->setUserOfAccount(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getUserBeneficiary(): ?AccountBeneficiary
+    {
+        return $this->userBeneficiary;
+    }
+
+    public function setUserBeneficiary(AccountBeneficiary $userBeneficiary): self
+    {
+        $this->userBeneficiary = $userBeneficiary;
+
+        // set the owning side of the relation if necessary
+        if ($userBeneficiary->getUser() !== $this) {
+            $userBeneficiary->setUser($this);
         }
 
         return $this;

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BankAccountRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,19 +30,31 @@ class BankAccount
     private $initialBalance;
 
     /**
-     * @ORM\OneToOne(targetEntity=UserAccount::class, mappedBy="accountOfUser", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bankAccounts")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $accountOfUser;
+    private $UserOfAccount;
 
-    // /**
-    //  * @ORM\OneToOne(targetEntity=Transaction::class, mappedBy="creditAccount", cascade={"persist", "remove"})
-    //  */
-    // private $transactionCredit;
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="CreditAccount")
+     */
+    private $transactionsCredit;
 
-    // /**
-    //  * @ORM\OneToOne(targetEntity=Transaction::class, mappedBy="debitAccount", cascade={"persist", "remove"})
-    //  */
-    // private $debitTransaction;
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="DebitAccount")
+     */
+    private $transactionsDebit;
+
+    /**
+     * @ORM\OneToOne(targetEntity=AccountBeneficiary::class, mappedBy="isBeneficiary", cascade={"persist", "remove"})
+     */
+    private $accountBeneficiary;
+
+    public function __construct()
+    {
+        $this->transactionsCredit = new ArrayCollection();
+        $this->transactionsDebit = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -71,54 +85,92 @@ class BankAccount
         return $this;
     }
 
-    public function getAccountOfUser(): ?UserAccount
+    public function getUserOfAccount(): ?User
     {
-        return $this->accountOfUser;
+        return $this->UserOfAccount;
     }
 
-    public function setAccountOfUser(UserAccount $accountOfUser): self
+    public function setUserOfAccount(?User $UserOfAccount): self
     {
-        $this->accountOfUser = $accountOfUser;
+        $this->UserOfAccount = $UserOfAccount;
 
-        // set the owning side of the relation if necessary
-        if ($accountOfUser->getAccountOfUser() !== $this) {
-            $accountOfUser->setAccountOfUser($this);
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactionsCredit(): Collection
+    {
+        return $this->transactionsCredit;
+    }
+
+    public function addTransactionsCredit(Transaction $transactionsCredit): self
+    {
+        if (!$this->transactionsCredit->contains($transactionsCredit)) {
+            $this->transactionsCredit[] = $transactionsCredit;
+            $transactionsCredit->setCreditAccount($this);
         }
 
         return $this;
     }
 
-    // public function getTransactionCredit(): ?Transaction
-    // {
-    //     return $this->transactionCredit;
-    // }
+    public function removeTransactionsCredit(Transaction $transactionsCredit): self
+    {
+        if ($this->transactionsCredit->removeElement($transactionsCredit)) {
+            // set the owning side to null (unless already changed)
+            if ($transactionsCredit->getCreditAccount() === $this) {
+                $transactionsCredit->setCreditAccount(null);
+            }
+        }
 
-    // public function setTransactionCredit(Transaction $transactionCredit): self
-    // {
-    //     $this->transactionCredit = $transactionCredit;
+        return $this;
+    }
 
-    //     // set the owning side of the relation if necessary
-    //     if ($transactionCredit->getCreditAccount() !== $this) {
-    //         $transactionCredit->setCreditAccount($this);
-    //     }
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactionsDebit(): Collection
+    {
+        return $this->transactionsDebit;
+    }
 
-    //     return $this;
-    // }
+    public function addTransactionsDebit(Transaction $transactionsDebit): self
+    {
+        if (!$this->transactionsDebit->contains($transactionsDebit)) {
+            $this->transactionsDebit[] = $transactionsDebit;
+            $transactionsDebit->setDebitAccount($this);
+        }
 
-    // public function getDebitTransaction(): ?Transaction
-    // {
-    //     return $this->debitTransaction;
-    // }
+        return $this;
+    }
 
-    // public function setDebitTransaction(Transaction $debitTransaction): self
-    // {
-    //     $this->debitTransaction = $debitTransaction;
+    public function removeTransactionsDebit(Transaction $transactionsDebit): self
+    {
+        if ($this->transactionsDebit->removeElement($transactionsDebit)) {
+            // set the owning side to null (unless already changed)
+            if ($transactionsDebit->getDebitAccount() === $this) {
+                $transactionsDebit->setDebitAccount(null);
+            }
+        }
 
-    //     // set the owning side of the relation if necessary
-    //     if ($debitTransaction->getDebitAccount() !== $this) {
-    //         $debitTransaction->setDebitAccount($this);
-    //     }
+        return $this;
+    }
 
-    //     return $this;
-    // }
+    public function getAccountBeneficiary(): ?AccountBeneficiary
+    {
+        return $this->accountBeneficiary;
+    }
+
+    public function setAccountBeneficiary(AccountBeneficiary $accountBeneficiary): self
+    {
+        $this->accountBeneficiary = $accountBeneficiary;
+
+        // set the owning side of the relation if necessary
+        if ($accountBeneficiary->getIsBeneficiary() !== $this) {
+            $accountBeneficiary->setIsBeneficiary($this);
+        }
+
+        return $this;
+    }
 }

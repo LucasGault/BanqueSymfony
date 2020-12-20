@@ -2,13 +2,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Banque Waluigi{% endblock %}</title>
+        <link rel="icon" type="image/png" href="../public/img/images.png" />
         {% block stylesheets %}
             <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-            <link rel="stylesheet" href="../assets\styles\app.css">
+            <!-- <link rel="stylesheet" href="../assets\styles\app.css"> -->
         {% endblock %}
     </head>
-    <body>
+    <body class="bg-yellow-400 h-screen font-mono text-lg " >
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

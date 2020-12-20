@@ -1,25 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Creer un Utilisateur{% endblock %}
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+    <div class="flex justify-around bg-purple-600 text-xl text-white py-6"> 
 
-    <h1 class=" text-4xl">Register</h1>
+        <h1 class=" text-4xl">Creer un Utilisateur</h1>
+    </div>
+    <div class="bg-purple-600 max-w-6xl p-10 mt-40 pt-20 mx-auto font-semibold">
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            <div class="flex items-center " >
+                {{ form_row(registrationForm.firstname) }}
+                {{ form_row(registrationForm.lastname) }}
+            </div>
+            <div class="flex items-center " >
+                {{ form_label(registrationForm.birthday) }}
+                {{ form_widget(registrationForm.birthday) }}
+            </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.firstname) }}
-        {{ form_row(registrationForm.lastname) }}
-        {{ form_row(registrationForm.birthday) }}
-        {{ form_row(registrationForm.roles) }}
+            {{ form_row(registrationForm.roles) }}
 
+            <div class="flex justify-center">
+                <button type="submit" class="btn font-semibold mt-12">Inscrire un utilisateur</button>
+            </div>
+            <div class="flex justify-center">
+                <a class="mx-auto mt-12" href="{{ path('index') }}">Retourner au menu principal</a>
+            </div>
+        {{ form_end(registrationForm) }}
+    </div>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
 {% endblock %}

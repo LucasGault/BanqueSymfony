@@ -27,6 +27,18 @@ class Transaction
      */
     private $transactionAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=BankAccount::class, inversedBy="transactionsCredit")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $CreditAccount;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=BankAccount::class, inversedBy="transactionsDebit")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $DebitAccount;
+
     // /**
     //  * @ORM\OneToOne(targetEntity=BankAccount::class, inversedBy="transactionCredit", cascade={"persist", "remove"})
     //  * @ORM\JoinColumn(nullable=false)
@@ -91,4 +103,28 @@ class Transaction
 
     //     return $this;
     // }
+
+    public function getCreditAccount(): ?BankAccount
+    {
+        return $this->CreditAccount;
+    }
+
+    public function setCreditAccount(?BankAccount $CreditAccount): self
+    {
+        $this->CreditAccount = $CreditAccount;
+
+        return $this;
+    }
+
+    public function getDebitAccount(): ?BankAccount
+    {
+        return $this->DebitAccount;
+    }
+
+    public function setDebitAccount(?BankAccount $DebitAccount): self
+    {
+        $this->DebitAccount = $DebitAccount;
+
+        return $this;
+    }
 }

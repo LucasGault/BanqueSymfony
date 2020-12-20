@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AccountBeneficiary{% endblock %}
+
+{% block body %}
+    <h1>AccountBeneficiary</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ account_beneficiary.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('account_beneficiary_index') }}">back to list</a>
+
+    <a href="{{ path('account_beneficiary_edit', {'id': account_beneficiary.id}) }}">edit</a>
+
+    {{ include('account_beneficiary/_delete_form.html.twig') }}
+{% endblock %}

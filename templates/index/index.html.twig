@@ -1,16 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Banque Waluigi{% endblock %}
 
 {% block body %}
 
-<div class="">
-    <ul>
-        <li><a href="{{ path('user_index') }}">Personne</a></li>
-        <li><a href="{{ path('bank_account_index') }}">Compte en banque</a></li>
-        {# <li><a href="{{ path('person_place_index') }}">Lieux visités</a></li>
-        <li><a href="{{ path('person_covid_index') }}">Personne infectée</a></li>
-        <li><a href="{{ path('app_register') }}">Créer des utilisateurs</a></li> #}
-   </ul>
-</div>
+{% set currentSolde = 0 %}
+{% set credit = 0 %}
+{% set debit = 0 %}
+
+
+
+<div class=" text-black h-full">
+    <div class="flex justify-around bg-purple-600 text-xl text-white py-6 "> 
+        {% if app.user %}
+            <p class=""><a href="{{ path('account_beneficiary_new') }}">Ajouter un bénéficiaire</a></p>
+            <p class=""><a href="{{ path('transaction_new') }}">Faire un virement</a></p>
+            {% for role in app.user.roles %}
+                {%if role == "ROLE_ADMIN" %}
+                    <p class=""><a href="{{ path('app_register') }}">Creer un compte</a></p>
+                    <p><a href="{{ path('user_index') }}">Liste des Utilisateurs</a></p>
+                    <p><a href="{{ path('bank_account_index') }}">Compte en banque</a></p>
+                {% endif %}
+            {% endfor %}
+            <p class="font-bold"><a href="{{ path('app_logout') }}">Deconnexion</a></p>
+        {% else %}
+            <p class=""><a href="{{ path('app_login') }}">Connexion</a></p>
+        {% endif %}
+    </div>
+    {% if app.user %}
+    <div class="px-6">
+        <div class="mb-12">
+            <p class=" text-2xl"> Bonjour {{app.user.firstname }} {{ app.user.lastname}}  </p>
+        </div>
+        <div class="bg-purple-600 max-w-6xl p-10 text-white mx-auto">
+            <p class="text-3xl pb-4 font-bold">Liste des comptes en banques</p>
+            {% for account in app.user.bankAccounts %}
+                <div class="pb-10">
+                    <p class="font-semibold"> Compte N° : {{account.id}} </p>
+                    <p> Iban : {{account.iban}} </p>
+                    <p class="">  Valeur initiale: {{account.initialBalance}} €</p>
+                    <p class="">  Solde actuel: {{account.initialBalance}} €</p>
+                </div>
+            {% endfor %}
+
+            {# <p class="font-semibold text-3xl"> Bénéficiaire </p>
+            {% for account in app.user.bankAccounts %}
+                {% for accountBeneficiary in account.accountBeneficiary %}
+                    <p class="font-semibold"> Compte N° : {{accountBeneficiary.id}} </p>
+                    
+                {% endfor %}
+            {% endfor %} #}
+
+        </div>
+            {# <p>Bénéficiaires</p>
+            {% for account in app.user.bankAccounts %}
+                <p>
+                    {{account.accountBeneficiary}} 
+                </p>
+                {% for beneficiary in account.accountBeneficiary %}
+                    <div>
+                        
+                        <p>
+                            {{beneficiary.id}}
+                        </p>
+                    </div>
+                {% endfor %}
+            {% endfor %} #}
+    </div>
+    </div>
+    {% endif %}
+    
+    
 {% endblock %}

@@ -1,37 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}BankAccount index{% endblock %}
+{% block title %}Liste des Comptes en banque{% endblock %}
 
 {% block body %}
-    <h1>BankAccount index</h1>
+    <div class="flex justify-around bg-purple-600 text-xl text-white py-6">     
+        <h1 class="text-4xl">Liste des Comptes en banque</h1>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Iban</th>
-                <th>InitialBalance</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="bg-purple-600 max-w-6xl p-10 mt-40 pt-20 text-white mx-auto ">
         {% for bank_account in bank_accounts %}
-            <tr>
-                <td>{{ bank_account.id }}</td>
-                <td>{{ bank_account.iban }}</td>
-                <td>{{ bank_account.initialBalance }}</td>
-                <td>
-                    <a href="{{ path('bank_account_show', {'id': bank_account.id}) }}">show</a>
-                    <a href="{{ path('bank_account_edit', {'id': bank_account.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="pb-10">
 
-    <a href="{{ path('bank_account_new') }}">Create new</a>
+                <p>Comptes N°: {{ bank_account.id }}</p>
+                <p>Iban: {{ bank_account.iban }}</p>
+                <p>Valeur initilal: {{ bank_account.initialBalance }} €</p>
+                <p>Solde actuel: {{ bank_account.initialBalance }} €</p>
+                <p class="text-2xl" >
+                    <a href="{{ path('bank_account_show', {'id': bank_account.id}) }}">Information</a>
+                    <a href="{{ path('bank_account_edit', {'id': bank_account.id}) }}">Modifier</a>
+                </p>
+            </div>
+
+        {% else %}
+                <p colspan="4">no records found</p>
+        {% endfor %}
+        <a class="text-3xl" href="{{ path('bank_account_new') }}">Create new</a>
+        
+        <div class="flex justify-center font-semibold text-2xl">
+            <a class="mx-auto mt-12" href="{{ path('index') }}">Retourner au menu principal</a>
+        </div>
+    </div>
+
+
 {% endblock %}

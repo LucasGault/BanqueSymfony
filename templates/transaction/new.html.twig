@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Virement{% endblock %}
+
+{% block body %}
+    <div class="flex justify-around bg-purple-600 text-4xl text-white py-6 "> 
+        <h1>Faire un virement</h1>
+    </div>
+    <div class="bg-purple-600 max-w-6xl p-10 mt-40 pt-20 mx-auto">
+
+        {{ include('transaction/_form.html.twig') }}
+        {# <a href="{{ path('transaction_index') }}">back to list</a> #}
+        <div class="flex justify-center font-semibold text-2xl">
+            <a class="mx-auto mt-12" href="{{ path('index') }}">Retourner au menu principal</a>
+        </div>
+    </div>
+
+{% endblock %}

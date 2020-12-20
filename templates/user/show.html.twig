@@ -1,39 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Utilisateur: {{ user.firstname }} {{ user.lastname }}{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <div class="flex justify-around bg-purple-600 text-4xl text-white py-6"> 
+        <h1>{{ user.firstname }} {{ user.lastname }}</h1>
+    </div>
+    <div class="bg-purple-600 max-w-6xl p-10 mt-40 pt-20 text-white mx-auto "> 
+        <p>Email: {{ user.email }}</p>
+        <p>Date de naissance {{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</p>
+        <p class="text-3xl mt-10">Comptes banquaire</p>
+        {% for account in user.bankAccounts %}
+            <div class="pb-10">
+                <p class="font-semibold"> Compte N° : {{account.id}} </p>
+                <p> Iban : {{account.iban}} </p>
+                <p class="">  Valeur initiale: {{account.initialBalance}} €</p>
+                <p class="">  Solde actuel: {{account.initialBalance}} €</p>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            
-            <tr>
-                <th>Firstname</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Birthday</th>
-                <td>{{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+            </div>
+        {% endfor %}
+        <p class="text-2xl flex justify-between" >
+            <a href="{{ path('user_index') }}">Retourner à la liste</a>
+            <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a>
+        </p>
 
     {{ include('user/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

@@ -3,41 +3,30 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-               
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Birthday</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="flex justify-around bg-purple-600 text-xl text-white py-6"> 
+        <h1 class="text-4xl">Liste des utilisateurs</h1>
+    </div>
+    <div class="bg-purple-600 max-w-6xl p-10 mt-40 pt-20 text-white mx-auto ">
         {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                {# <td>{{ user.roles ? user.roles|json_encode : '' }}</td> #}
-                <td>{{ user.firstname }}</td>
-                <td>{{ user.lastname }}</td>
-                <td>{{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
+            <div class="pb-10">
+                <p class="font-semibold">Utilisateur N°: {{ user.id }}</p>
+                <p>Email: {{ user.email }}</p>
+                {# <p>{{ user.roles ? user.roles|json_encode : '' }}</p> #}
+                <p>Prenom: {{ user.firstname }}</p>
+                <p>Nom: {{ user.lastname }}</p>
+                <p>Date de naissance: {{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</p>
+                <p class="text-2xl" >
+                    <a href="{{ path('user_show', {'id': user.id}) }}">Information</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a>
+                </p>
+            </div>
         {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
+                <p colspan="8">no records found</p>
         {% endfor %}
-        </tbody>
-    </table>
+        <div class="flex justify-center font-semibold text-2xl">
+            <a class="mx-auto mt-12" href="{{ path('index') }}">Retourner au menu principal</a>
+        </div>
+    </div>
 
     {# <a href="{{ path('user_new') }}">Create new</a> #}
 {% endblock %}

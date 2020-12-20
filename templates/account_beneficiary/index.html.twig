@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AccountBeneficiary index{% endblock %}
+
+{% block body %}
+    <h1>AccountBeneficiary index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for account_beneficiary in account_beneficiaries %}
+            <tr>
+                <td>{{ account_beneficiary.id }}</td>
+                <td>
+                    <a href="{{ path('account_beneficiary_show', {'id': account_beneficiary.id}) }}">show</a>
+                    <a href="{{ path('account_beneficiary_edit', {'id': account_beneficiary.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('account_beneficiary_new') }}">Create new</a>
+{% endblock %}

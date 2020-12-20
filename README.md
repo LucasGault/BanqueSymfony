@@ -30,6 +30,5 @@ Un user :
 Le “sole actuel” correspond à : 
     - solde initial + somme des crédits - somme des débits
 
-N’hésitez pas à intégrer un peu de CSS et de javascript dans votre application afin de la rendre jolie.
-    (Je sais que nous ne l’avons pas fait en cours mais la documentation de Symfony vous donnes tout ce qu’il faut pour le faire)
-    Utilisez bien la documentation de Symfony !
+
+Ajouter le fichier `.env`

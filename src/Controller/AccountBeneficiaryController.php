@@ -39,7 +39,7 @@ class AccountBeneficiaryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             
-            $accountBeneficiary->setUser(1);
+            // $accountBeneficiary->setUser();
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($accountBeneficiary);
